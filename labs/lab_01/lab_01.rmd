@@ -78,8 +78,19 @@ umd_courses |>
 
 **Q5** Take one of the questions you listed in the final question of the pre_lab and try to answer it here in code. If you don't know how to fully answer it, write what code you can and describe in words what else you would need to do. If you got an answer, is it interesting? **A5**
 
-```{r}
+Below the next block of r code I wrote out some questions I have about the data set. For this assignment the question I want to answer is what classes have the most seats? While I got a chart that looks similar to the ones in questions above, I'm still not sure if I did it right since the top number I get is 22 seats. When scrolling through the umd_courses data I see some classes with over 100 seats.
 
+```{r}
+umd_courses |>
+  group_by(id) |>
+summarise(
+    seats = n(),
+  ) |>
+  arrange(desc(seats))
 ```
 
 What questions do I have about this data set?
+
+1.  How many courses in this data set have descriptions?
+2.  How many undergraduate vs graduate courses are there?
+3.  What classes have the most seats?

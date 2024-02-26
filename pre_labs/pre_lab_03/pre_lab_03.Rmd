@@ -278,16 +278,22 @@ cleaned_md_grants_loans
 
 **Task** Write and run code to answer our original question: which zip code has gotten the most amount of money from the Maryland Tourism Board? Does that zip code make sense to you?
 
-If I wrote the code correctly then the zip code 21202 received \$8,464,101 from the Maryland Tourism Board.
+If I wrote the code correctly then the zip code 21202 received \$8,464,101 from the Maryland Tourism Board. That is the area near Baltimore's Inner Harbor which is a major tourist attraction in Maryland
 
 ```{r}
+#My version
 cleaned_md_grants_loans |>
    group_by(zip5) |>
-  filter(str_detect(source, 'MARYLAND TOURISM BOARD')) |>
+ filter(str_detect(source, 'MARYLAND TOURISM BOARD')) |>
   summarise(total_amount = sum(amount)) |>
-  arrange(desc(total_amount))
+ arrange(desc(total_amount))
 
-
+#class answer
+#answer <- cleaned_md_grants_loans |>
+  #filter(str_detect(source, 'MARYLAND TOURISM BOARD'))
+  #group_by(zip5) |>
+  #summarise(total_amount = sum(amount)) |>
+  #arrange(desc(total_amount))
   
   
 

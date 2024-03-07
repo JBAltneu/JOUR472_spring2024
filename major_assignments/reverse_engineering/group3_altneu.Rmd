@@ -28,6 +28,7 @@ Loading required libraries for this analysis.
 library(tidyverse)
 library(lubridate)
 library(janitor)
+library(readr)
 
 
 ```
@@ -53,20 +54,32 @@ In this notebook, we are reverse engineering five sentences from the story.
 ### Sentence 1
 
 -   **Sentence text**: "This deep-pocketed group has sent \$34.2 million (72.9 percent) to Republican campaigns or super PACs purely supporting Republican causes, compared to \$10.1 million (21.5 percent) to Democrats over the past three elections. Less than 6 percent of contributions went to bipartisan or unaffiliated recipients."
--   **Analysis summary**: [Write up two to three sentences describing the results of your analysis. Were you able to confirm the finding? If not, why not?]
-
-The commas and potentially the \$ is prohibiting R from reading the amount as a number. We are not sure how to delete the commas and dollar signs.
+-   **Analysis summary**: I was able to confirm the findings from the story including both the total and the percent values. The amount of donations that went to bipartisan groups was 5.6%
 
 ```{r}
 # Put code to reverse engineer sentence here
 # Display results of code below this codeblock
 
-owners_donations |>
-  filter(party == 'Republican') |>
-  summarize(total_amount = sum(amount)) |> 
-  arrange(desc(total_amount))
-
-  #group_by(party) |> 
+party_donations <- owners_donations |>
+  mutate(
+   new_party = case_when(
+    party == 'Republican' ~ 'Republican',
+    party == 'Democrat' ~ 'Democrat',
+    .default = 'Bipartisan'
+  )
+  ) |>
+  mutate(new_account = parse_number(amount)) 
+    
+  total_party_donations <- party_donations |>
+  group_by (new_party) |>
+    summarise(total_amount = sum(new_account)) |>
+  arrange(desc(total_amount)) |>
+    mutate(
+      total_party_donations = sum(total_amount),
+      pct_total = total_amount/ total_party_donations
+    )
+   
+  
  
 
 ```

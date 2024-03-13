@@ -43,6 +43,15 @@ owners_donations <- read_csv('data/sports_political_donations.csv') |> clean_nam
 # Path to data should be loaded from folder "data" i.e. read_csv("data/name_of_data.csv")
 
 # Clean required data and prepare for analysis if needed. 
+party_donations <- owners_donations |>
+  mutate(
+   new_party = case_when(
+    party == 'Republican' ~ 'Republican',
+    party == 'Democrat' ~ 'Democrat',
+    .default = 'Bipartisan'
+  )
+  ) |>
+  mutate(new_amount = parse_number(amount)) 
 
 
 ```
@@ -59,38 +68,34 @@ In this notebook, we are reverse engineering five sentences from the story.
 ```{r}
 # Put code to reverse engineer sentence here
 # Display results of code below this codeblock
-
-party_donations <- owners_donations |>
-  mutate(
-   new_party = case_when(
-    party == 'Republican' ~ 'Republican',
-    party == 'Democrat' ~ 'Democrat',
-    .default = 'Bipartisan'
-  )
-  ) |>
-  mutate(new_account = parse_number(amount)) 
     
   total_party_donations <- party_donations |>
   group_by (new_party) |>
-    summarise(total_amount = sum(new_account)) |>
+    summarise(total_amount = sum(new_amount)) |>
   arrange(desc(total_amount)) |>
     mutate(
       total_party_donations = sum(total_amount),
       pct_total = total_amount/ total_party_donations
     )
    
-  
  
 
 ```
 
 ### Sentence 2
 
--   **Sentence text**: [Paste in sentence to engineer here]
--   **Analysis summary**: [Write up two to three sentences describing the results of your analysis. Were you able to confirm the finding? If not, why not?]
+-   **Sentence text**: "There are 40 owners who have donated at least \$100,000 to Republican causes over the six-year period"
+-   **Analysis summary**: We were not able to replicate this finding. Our analysis gave us 37 owners that had donated over \$100,000 to Republican causes and candidate over the past six years. Somehow the authors got one more owner than us.
 
 ```{r}
 # Put code to reverse engineer sentence here
+ republican_party_donations <-party_donations |>
+   filter(new_party == "Republican") |>
+   group_by(owner) |>
+   summarise(total_amount = sum(new_amount)) |>
+   filter(total_amount >= 100000)
+   
+          
 
 # Display results of code below this codeblock
 
@@ -98,11 +103,18 @@ party_donations <- owners_donations |>
 
 ### Sentence 3
 
--   **Sentence text**: [Paste in sentence to engineer here]
--   **Analysis summary**: [Write up two to three sentences describing the results of your analysis. Were you able to confirm the finding? If not, why not?]
+-   **Sentence text**: "23 owners topping \$100,000 to Democrats [causes and candidates]"
+-   **Analysis summary**: We were not able to replicate this finding. Our analysis gave us 22 owners that had donated over \$100,000 to Democrat causes and candidates over the past six years. Somehow the authors got three more owners than us.
 
 ```{r}
 # Put code to reverse engineer sentence here
+  democrat_party_donations <-party_donations |>
+      filter(new_party == "Democrat") |>
+         group_by(owner) |>
+        summarise(total_amount = sum(new_amount)) |>
+         filter(total_amount >= 100000)
+   
+    
 
 # Display results of code below this codeblock
 

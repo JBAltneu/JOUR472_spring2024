@@ -77,13 +77,14 @@ A2.
 **Note: I got some help from my classmates but got stuck, that's why I did not finish this question.**
 
 ```{r}
-overdose_calls <- overdose_calls |> 
+ balt_county_911_calls <- overdose_calls |> 
   mutate(day_of_week = wday(date)) 
   
- # overdose_calls |>
-  #group_by(day_of_week) |>
-  #summarize (count = n()) |>
-  #mutate(pct_total = (day_of_week/sum(day_of_week) *100))
+  balt_county_911_calls |>
+  group_by(day_of_week) |>
+  summarize (count = n()) |>
+  mutate(pct_total = count/4112*100) |>
+    arrange(desc(count))
   
   
 ```

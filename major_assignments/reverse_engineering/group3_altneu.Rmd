@@ -44,6 +44,7 @@ owners_donations <- read_csv('data/sports_political_donations.csv') |> clean_nam
 
 # Clean required data and prepare for analysis if needed. 
 party_donations <- owners_donations |>
+  # gets rid of extra text after the main party name and puts that in a new column 
   mutate(
    new_party = case_when(
     party == 'Republican' ~ 'Republican',
@@ -51,6 +52,7 @@ party_donations <- owners_donations |>
     .default = 'Bipartisan'
   )
   ) |>
+  # gets rid of dollar sign and comma to make amount a number instead of a character in a new column 
   mutate(new_amount = parse_number(amount)) 
 
 
@@ -85,7 +87,7 @@ In this notebook, we are reverse engineering five sentences from the story.
 ### Sentence 2
 
 -   **Sentence text**: "There are 40 owners who have donated at least \$100,000 to Republican causes over the six-year period"
--   **Analysis summary**: We were not able to replicate this finding. Our analysis gave us 37 owners that had donated over \$100,000 to Republican causes and candidate over the past six years. Somehow the authors got one more owner than us.
+-   **Analysis summary**: We were not able to replicate this finding. Our analysis gave us 37 owners that had donated over \$100,000 to Republican causes and candidate over the past six years. Somehow the authors got three more owners than us.
 
 ```{r}
 # Put code to reverse engineer sentence here
@@ -93,7 +95,8 @@ In this notebook, we are reverse engineering five sentences from the story.
    filter(new_party == "Republican") |>
    group_by(owner) |>
    summarise(total_amount = sum(new_amount)) |>
-   filter(total_amount >= 100000)
+   filter(total_amount >= 100000) |>
+   arrange(desc(total_amount))
    
           
 
@@ -104,7 +107,7 @@ In this notebook, we are reverse engineering five sentences from the story.
 ### Sentence 3
 
 -   **Sentence text**: "23 owners topping \$100,000 to Democrats [causes and candidates]"
--   **Analysis summary**: We were not able to replicate this finding. Our analysis gave us 22 owners that had donated over \$100,000 to Democrat causes and candidates over the past six years. Somehow the authors got three more owners than us.
+-   **Analysis summary**: We were not able to replicate this finding. Our analysis gave us 22 owners that had donated over \$100,000 to Democrat causes and candidates over the past six years. Somehow the authors got one more owner than us.
 
 ```{r}
 # Put code to reverse engineer sentence here
@@ -112,12 +115,19 @@ In this notebook, we are reverse engineering five sentences from the story.
       filter(new_party == "Democrat") |>
          group_by(owner) |>
         summarise(total_amount = sum(new_amount)) |>
-         filter(total_amount >= 100000)
+         filter(total_amount >= 100000) |>
+         arrange(desc(total_amount))
    
-    
-
 # Display results of code below this codeblock
 
+```
+
+```{r}
+# just extra code to find something else I was curious about that was not stated in the story
+party_donations |>
+  group_by(team) |>
+  summarise(total_amount = sum(new_amount)) |>
+  arrange(desc(total_amount))
 ```
 
 ### Sentence 4

@@ -107,11 +107,21 @@ moco_pop_overdose <- moco_pop_overdose |>
 
 **Q4** Using [CensusReporter.org](https://censusreporter.org/), examine the zip codes with the highest and lowest rates and compare and contrast their demographic profiles. Is there a story here?
 
-**A4**
+**A4: The zip code that had the highest rate of calls is in Gaithersburg, Maryland. Gaithersburg is majority minority community with lots of Hispanic residents. The poverty level is 13.2% which is 1.4 times the Maryland state average of 9.3%.**
+
+When looking up zip code 20707 on the Census Reporter website I noticed that zip code is not in Montgomery County but for the Laurel area which is in Prince George's County. The second lowest call rate is a zip code in Olney which is a nearly 60% white area. Most households earn over \$100,000 a year making it a wealthy area and the vast majority of residents graduated high school and earned a college degree.
 
 **Q5** Go back to your joined dataframe from Q3 and add two more columns representing the minimum and maximum populations based on the estimate and margin of error, then calculate per capita rates for each. Do you get the same two zip codes for the highest and lowest as you did before? Does that give you more or less confidence in your answers to Q3?
 
-**A5**
+**A5: I got the same zip codes when looking at both the upper and lower ends of the margin of error.**
 
 ```{r}
+moco_pop_overdose <- moco_pop_overdose |>
+  mutate(min_pop_estimate = (population - moe)) |>
+  mutate(max_pop_estimate = (population + moe)) |>
+ mutate(min_rate_per_1k = (total_calls/min_pop_estimate)*1000) |>
+  mutate(max_rate_per_1k = (total_calls/max_pop_estimate)*1000) |>
+  arrange(desc(min_rate_per_1k)) |>
+  arrange(desc(max_rate_per_1k))
+  
 ```

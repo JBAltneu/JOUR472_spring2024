@@ -110,7 +110,7 @@ What do the top counties all have in common? Lots of suburban flight from D.C an
 
 ### Task 5: Margins of Error
 
-**Task** Run the following codeblock to create a chart showing the margin of error for each county. The current headline isn't very descriptive of the data. What should it be? **Answer**
+**Task** Run the following codeblock to create a chart showing the margin of error for each county. The current headline isn't very descriptive of the data. What should it be? **Answer: Median household income by Maryland counties**
 
 ```{r}
 md |>
@@ -126,9 +126,9 @@ md |>
 
 As you can see, some of the error bars are quite wide. Some are narrow. But if the bars overlap, it means the difference between the two counties is within the margin of error, and the differences aren't statistically significant.
 
-Is the difference between Calvert and Montgomery significant? **Answer**
+Is the difference between Calvert and Montgomery significant? **Answer: No because Calvert County has a big margin of error but in reality there is only a few thousand dollar difference between the median income in both counties.**
 
-Is the difference between Howard and everyone else significant? **Answer**
+Is the difference between Howard and everyone else significant? **Answer: Yes because even while considering the margin of error the median income in Howard county will be over** \$120,000. Only Montgomery County could have a median of income that high depending on the size of the margin error. After the top three counties the median household income is \$110,000 or less which is a big drop off from \$120,000 and \$130,000.
 
 ### Task 6: Joining Multiple Years Together
 
@@ -152,7 +152,9 @@ md10 <- get_acs(geography = "county",
 
 What we're going to do next is a lot, but each step is simple. We're going to join the data together, so each county has one line of data. Then we're going to rename some fields that repeat. Then we're going to calculate the minimum and maximum value of the estimate using the margin of error. That'll help us later. After that, we're going to calculate a percent change and sort it by that change.
 
-**Task** Run the following codeblock to join the data, rename the population estimates and then calculate the values we need. Notice how we select *after* we do the initial calculations so we only see the columns we're interested in (and drop the ones we don't want to see). Also note how the select function has the minus sign (-) in front of some columns? That means we don't want to see them in our result. Which jurisdictions saw the largest increases in median income? Did any counties see their median incomes fall from 2010-2021? **Answer**
+**Task** Run the following codeblock to join the data, rename the population estimates and then calculate the values we need. Notice how we select *after* we do the initial calculations so we only see the columns we're interested in (and drop the ones we don't want to see). Also note how the select function has the minus sign (-) in front of some columns? That means we don't want to see them in our result. Which jurisdictions saw the largest increases in median income? Did any counties see their median incomes fall from 2010-2021? **Answer: Baltimore City saw the largest increase in median income, jumping up 37.4%. Allegany and Calvert counties also saw their median income increase by over 30%. No Maryland counties saw a drop in median income.**
+
+Note: I'm a bit confused on what columns we should be using to make the comparisons for answering this question
 
 ```{r}
 md10 |>

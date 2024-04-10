@@ -139,17 +139,25 @@ pg_calls_zipcodes <- pg_overdose_2022 |>
 ```
 
 ```{r}
-v22 <- load_variables(2022, "acs5", cache=TRUE)
-#need to make ztca 
+#Step 2
+md_median_income_zip <- get_acs(geography = 'zcta',
+              variables = 'B19013_001',
+              state = 'MD', 
+              year = 2019) 
 
+#Step 3 
+pg_overdoses_with_income <- pg_calls_zipcodes |>
+  inner_join(md_median_income_zip, by = c('zipcode' = 'GEOID'))
 ```
 
 ```{r}
-pg_medincome_by_zipcode <- get_acs(geography = 'zcta',
-              variables = c(medincome = 'B07011_001'),
-              county = 'Prince George\'s',
-              year = 2022) 
-  
-pg_medincome_by_zipcode <- pg_medincome_by_zipcode |>
- inner_join(pg_calls_zipcodes, by=c("NAME" = "zipcode"))
+#steps 4-7
+  ggplot(pg_overdoses_with_income, aes(x= estimate, y = total_calls)) +
+    geom_point() + 
+    labs (
+      title = 'Prince George\'s median income to number of overdose calls',
+      x = 'Median income',
+      y = 'Total number of calls'
+    ) +
+    geom_text(aes(x= estimate, y = total_calls, label = zipcode), check_overlap = TRUE)
 ```

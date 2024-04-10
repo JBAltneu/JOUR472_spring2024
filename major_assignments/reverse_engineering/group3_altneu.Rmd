@@ -54,7 +54,9 @@ party_donations <- owners_donations |>
   ) |>
   # gets rid of dollar sign and comma to make amount a number instead of a character in a new column 
   mutate(new_amount = parse_number(amount)) |>
-  mutate(recipient = str_to_upper(recipient))
+  mutate(recipient = str_to_upper(recipient)) 
+
+write_csv(party_donations, "data/party_donations.csv")
 
 
 ```
@@ -69,7 +71,7 @@ In this notebook, we are reverse engineering five sentences from the story.
 -   **Analysis summary**: I was able to confirm the findings from the story including both the total and the percent values. I was able to confirm the percentages of 72.9% and 21.5%. The amount of donations that went to bipartisan groups was 5.6%
 
 ```{r}
-  party_donations |>
+  total_amount_donated <- party_donations |>
   group_by (new_party) |>
     summarise(total_amount = sum(new_amount)) |>
   arrange(desc(total_amount)) |>
@@ -79,7 +81,7 @@ In this notebook, we are reverse engineering five sentences from the story.
     )
    
  
-
+write_csv(total_amount_donated, "data/total_amount_donated.csv")
 ```
 
 ### Sentence 2

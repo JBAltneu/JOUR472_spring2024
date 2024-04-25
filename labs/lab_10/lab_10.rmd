@@ -100,8 +100,8 @@ md_countywide_outage_geo <- md_counties_fixed |>
 ```{r}
 #Map it out
 ggplot()+
-  geom_sf(data = md_countywide_outage_geo, aes(fill = rate_per_10000)) +
-   scale_fill_viridis_b(option="plasma") 
+  geom_sf(data= md_countywide_outage_geo, aes(fill = rate_per_10000)) +
+   scale_fill_viridis_b(option="plasma", trans = "log") 
 
 ```
 

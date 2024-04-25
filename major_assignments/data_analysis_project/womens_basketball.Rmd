@@ -1,0 +1,31 @@
+---
+title: "women's basketball data"
+author: "Judith Altneu"
+date: "2024-04-23"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r}
+womens_basketball_2324 <- read_csv("data/wbb_rosters_2023_24.csv")
+```
+
+We might need to calculate average height using total inches since that column is in a number format already. The only other solution I can think of is converting the height into a decimal where 5.01 means 5 foot 1, etc.
+
+I don't know what the variable count means and can't find what that variable definition it in the big GitHub file.
+
+The 2023-2024 roster data set alone has 13,907 rows and 31 columns with lots of data already cleaned including the players' home state, country, position, etc.
+
+```{r}
+womens_basketball_2324 <- womens_basketball_2324 |>
+  mutate(ncaa_id = as.character(ncaa_id))
+```

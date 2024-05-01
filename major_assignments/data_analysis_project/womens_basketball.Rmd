@@ -29,3 +29,36 @@ The 2023-2024 roster data set alone has 13,907 rows and 31 columns with lots of 
 womens_basketball_2324 <- womens_basketball_2324 |>
   mutate(ncaa_id = as.character(ncaa_id))
 ```
+
+1.  **What states produced the most NCAA recruits for the 2023-2024 season? Trying to add census data to then calculate rate per 1,000.**
+
+```{r}
+
+```
+
+2.  **What schools produced the most NCAA recruits for the 2023-24 season? Are they mostly public or private?**
+
+```{r}
+wbb_high_school <- womens_basketball_2324 |>
+  drop_na(hs_clean) |>
+  group_by(hs_clean) |>
+  summarize(count = n()) |>
+  arrange(desc(count)) |>
+  top_n(10)
+```
+
+```{r}
+#Trying to string together hs name clean with the city and state so we group by each unique high school.
+womens_basketball_2324 <- womens_basketball_2324 |>
+  drop_na(hs_clean) |>
+  mutate(hs_and_state = paste(hs_clean, " -", hometown_clean))
+```
+
+```{r}
+ wbb_high_school_clean <- womens_basketball_2324 |>
+  drop_na(hs_and_state) |>
+  group_by(hs_and_state) |>
+  summarize(count = n()) |>
+  arrange(desc(count)) |>
+  top_n(10)
+```

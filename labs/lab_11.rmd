@@ -91,18 +91,21 @@ cardin_date <- cardin_url |>
   html_elements('h5.customBlog_item__date') |>
   html_text() |>
   as_tibble()
+#could be html_elements('h5') instead 
 
 cardin_title <- cardin_url |>
   read_html() |>
   html_elements('h3.customBlog_item__title') |>
   html_text() |>
   as_tibble() 
+#could be html_elements('h3 a') instead 
 
 cardin_url_new <- cardin_url |>
   read_html() |>
   html_elements('a.customBlog_item__readMore') |>
   html_attr('href') |>
   as_tibble()
+#could be html_elements('h3 a') instead
 
 cardin_pr_combined <- bind_cols(list(cardin_date, cardin_title, cardin_url_new)) 
 ```
